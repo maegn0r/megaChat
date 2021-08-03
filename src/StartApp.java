@@ -1,7 +1,9 @@
-import server.Server;
+import client.ChatStarter;
+
 
 public class StartApp {
     public static void main(String[] args) {
-        new Server();
+
+        new ChatStarter();
     }
 }
