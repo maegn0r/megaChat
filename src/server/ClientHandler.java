@@ -140,7 +140,7 @@ public class ClientHandler {
             try {
                 Thread.sleep(TIME_TO_AUTH);
                 if (name == null) {
-                    sendMessage("Время на авторизацию истекло! Соединение с сервером разорвано...");
+                    sendMessage("Время на аутентификацию истекло! Соединение с сервером разорвано...");
                     closeConnection(socket);
                 }
             } catch (InterruptedException e) {
