@@ -33,27 +33,29 @@ public class Server {
         return authService;
     }
 
-    public void subscribe(ClientHandler user) {
+    public synchronized void subscribe(ClientHandler user) {
         loggedInUsers.add(user);
     }
 
-    public void unsubscribe(ClientHandler user) {
+    public synchronized void unsubscribe(ClientHandler user) {
         loggedInUsers.remove(user);
+        System.out.println(user.getName() + "отписался");
     }
 
-    public boolean isNotUserOccupied(String name) {
+    public synchronized boolean isNotUserOccupied(String name) {
         return !isUserOccupied(name);
     }
 
-    public boolean isUserOccupied(String name) {
+    public synchronized boolean isUserOccupied(String name) {
         return loggedInUsers.stream()
                 .anyMatch(u -> u.getName().equals(name));
     }
 
-    public void broadcastMessage(String outboundMessage) {
+    public synchronized void broadcastMessage(String outboundMessage) {
         loggedInUsers.forEach(clientHandler -> clientHandler.sendMessage(outboundMessage));
     }
-    public void privateMessage(String senderName, String receiverName, String message){
+
+    public synchronized void privateMessage(String senderName, String receiverName, String message) {
         loggedInUsers.stream()
                 .filter(clientHandler -> clientHandler.getName().equals(receiverName))
                 .findFirst().ifPresent(clientHandler -> clientHandler.sendMessage(senderName + " отправил Вам личное сообщение: " + message));

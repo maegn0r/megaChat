@@ -2,19 +2,22 @@ package client.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Supplier;
+import java.util.function.Consumer;
 
 public class ChatFrame {
+
     private final JFrame mainFrame;
-    private final Supplier<String> listener;
+    private JTextArea chattingArea;
+    private JButton submitButton;
+    private final Consumer<String> inboundMessageConsumer;
+    private final Consumer<String> outboundMessageConsumer;
 
-    public ChatFrame(Supplier<String> listener) {
-        this.listener = listener;
-
+    public ChatFrame(Consumer<String> outboundMessageConsumer) {
+        this.outboundMessageConsumer = outboundMessageConsumer;
+        inboundMessageConsumer = createInboundMessageConsumer();
         mainFrame = new JFrame();
-
-        mainFrame.setTitle("OutstandingChat v. 1.0");
-        mainFrame.setBounds(new Rectangle(400, 700));
+        mainFrame.setTitle("Mega Chat v. 1.0");
+        mainFrame.setBounds(new Rectangle(450, 700));
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.setLayout(new BorderLayout());
         mainFrame.add(createTop(), BorderLayout.CENTER);
@@ -22,25 +25,40 @@ public class ChatFrame {
         mainFrame.setVisible(true);
     }
 
-    private JPanel createTop(){
+    public Consumer<String> getInboundMessageConsumer() {
+        return inboundMessageConsumer;
+    }
+
+    private Consumer<String> createInboundMessageConsumer() {
+        return inboundMessage -> {
+            chattingArea.append(inboundMessage);
+            chattingArea.append("\n");
+        };
+    }
+
+    private JPanel createTop() {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new BorderLayout());
-        JTextArea chattingArea = new JTextArea();
+        chattingArea = new JTextArea();
         chattingArea.setEditable(false);
         jPanel.add(chattingArea, BorderLayout.CENTER);
         return jPanel;
     }
 
-    private JPanel createBottom(){
+    private JPanel createBottom() {
         JPanel jPanel = new JPanel();
         jPanel.setLayout(new BorderLayout());
-
         JTextField inputArea = new JTextField();
-        JButton submitButton = new JButton("Submit");
-       // submitButton.addActionListener();
+        submitButton = new JButton("Submit");
+        submitButton.addActionListener(event -> {
+            String text = inputArea.getText();
+            outboundMessageConsumer.accept(text);
+            inputArea.setText("");
+        });
 
         jPanel.add(inputArea, BorderLayout.CENTER);
         jPanel.add(submitButton, BorderLayout.EAST);
         return jPanel;
     }
+
 }

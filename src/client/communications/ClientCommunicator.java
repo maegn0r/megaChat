@@ -13,21 +13,26 @@ public class ClientCommunicator {
     public void sendMessage(String outboundMessage) {
         try {
             connector.getOut().writeUTF(outboundMessage);
-
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Произошла ошибка при отправке сообщения", e);
         }
-
     }
 
-    public void receiveMessage() {
+    public String receiveMessage() {
         try {
-            connector.getIn().readUTF();
+            return connector.getIn().readUTF();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Произошла ошибка при получении сообщения", e);
         }
-
     }
 
+    public boolean checkIsAvailable() {
+        try {
+            return connector.getIn().available() > 0;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Произошла ошибка при получении сообщения", e);
+        }
+    }
 }

@@ -16,7 +16,7 @@ class ClientConnector {
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Чат не стартовал", e);
         }
     }
@@ -28,4 +28,6 @@ class ClientConnector {
     public DataOutputStream getOut() {
         return out;
     }
+
 }
+

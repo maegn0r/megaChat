@@ -1,9 +1,7 @@
-import client.ChatStarter;
-
+import client.MegaChat;
 
 public class StartApp {
     public static void main(String[] args) {
-
-        new ChatStarter();
+        new MegaChat();
     }
 }
