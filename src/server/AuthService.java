@@ -16,7 +16,7 @@ public class AuthService {
         );
     }
 
-    public Optional<Entry> findUserByLoginAndPass(String login, String password){
+    public Optional<Entry> findUserByLoginAndPass(String login, String password) {
         return entries.stream()
                 .filter(entry -> entry.login.equals(login) && entry.password.equals(password))
                 .findFirst();
@@ -24,8 +24,8 @@ public class AuthService {
 
     static class Entry {
         String name;
-         String login;
-         String password;
+        String login;
+        String password;
 
         public Entry(String name, String login, String password) {
             this.name = name;
